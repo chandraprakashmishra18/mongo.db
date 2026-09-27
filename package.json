@@ -1,0 +1,16 @@
+{
+  "name": "mongo-db-local",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Local MongoDB setup and Node.js connection example",
+  "scripts": {
+    "start": "node --env-file-if-exists=.env.local src/index.js",
+    "db:up": "docker compose up -d mongodb",
+    "db:down": "docker compose down",
+    "db:logs": "docker compose logs -f mongodb"
+  },
+  "dependencies": {
+    "mongodb": "^7.6.0"
+  }
+}
