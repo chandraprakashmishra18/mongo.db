@@ -9,9 +9,9 @@ try {
   await client.connect();
   const database = client.db(databaseName);
   await database.command({ ping: 1 });
-  console.log(`Connected to MongoDB; database "${databaseName}" is ready.`);
+  console.log(`Connected to MongoDB; selected database "${databaseName}".`);
 } catch (error) {
-  console.error(`Could not connect to MongoDB at ${uri}: ${error.message}`);
+  console.error(`Could not connect to MongoDB (${error.name}). Check MONGODB_URL and confirm the server is running.`);
   process.exitCode = 1;
 } finally {
   await client?.close();
