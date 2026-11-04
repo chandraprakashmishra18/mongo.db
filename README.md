@@ -2,6 +2,8 @@
 
 This project runs MongoDB 8.0 in Docker and includes a small Node.js driver connection check.
 
+Run `npm run hello` to print the starter app's greeting.
+
 ## Start MongoDB
 
 1. Install and start Docker Desktop, then wait for its engine to be ready.
