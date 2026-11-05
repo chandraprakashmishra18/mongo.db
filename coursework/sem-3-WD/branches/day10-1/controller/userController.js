@@ -29,6 +29,22 @@ const getById = async (req, res) => {
     }
 };
 
+// const loginUser = async(req,res) =>{
+// try{
+//     const {email , password } = req.body;
+//     if(!email || )
+// }
+// }
+
+const user = await User.findOne({email});
+if(!user){
+    return res.status(404).json({
+        success: false,
+        message: 'User not found'
+    });
+}
+
+// if (user.password !== )
 const save = async (req, res) => {
     try {
         const user = await userModel.save(req.body);
