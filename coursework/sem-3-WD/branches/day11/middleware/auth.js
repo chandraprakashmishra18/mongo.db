@@ -18,3 +18,11 @@ app.post("/login", async (req,res)=>{
         message: "Login Successful"
     });
 });
+
+const jwt = require("jsonwebtoken");
+try{
+    const decoded = jwt.verify(token, "mysecretkey");
+    console.log(decoded);
+} catch (error) {
+    console.log("Invalid Token");
+}
