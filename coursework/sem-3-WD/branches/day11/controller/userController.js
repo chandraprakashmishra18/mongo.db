@@ -1,83 +1,248 @@
-const userModel = require("../model/userModel");
 
+const User = require('../model/User');
+const bcrypt = require('bcrypt');
+
+// Common error handler
 const handleError = (res, error) => {
+    console.error(error);
+
     if (error.code === 11000) {
-        return res.status(400).json({ message: "Email already exists" });
+        return res.status(400).json({
+            success: false,
+            message: 'Email already exists'
+        });
     }
-    const status = error.name === "ValidationError" ? 400 : 500;
-    res.status(status).json({ message: error.message });
-};
 
-const getAll = async (req, res) => {
-    try {
-        res.json(await userModel.getAll());
-    } catch (error) {
-        handleError(res, error);
+    if (error.name === 'ValidationError') {
+        return res.status(400).json({
+            success: false,
+            message: error.message
+        });
     }
-};
 
-const getById = async (req, res) => {
-    try {
-        const id = Number(req.params.id);
-        if (Number.isNaN(id)) return res.status(400).json({ message: "Invalid id" });
-
-        const user = await userModel.getById(id);
-        if (!user) return res.status(404).json({ message: "User not found" });
-        res.json(user);
-    } catch (error) {
-        handleError(res, error);
+    if (error.name === 'CastError') {
+        return res.status(400).json({
+            success: false,
+            message: 'Invalid ID'
+        });
     }
-};
 
-// const loginUser = async(req,res) =>{
-// try{
-//     const {email , password } = req.body;
-//     if(!email || )
-// }
-// }
-
-const user = await User.findOne({email});
-if(!user){
-    return res.status(404).json({
+    return res.status(500).json({
         success: false,
-        message: 'User not found'
+        message: 'Internal server error'
     });
-}
+};
 
-// if (user.password !== )
+
+// 1. REGISTER / CREATE USER
 const save = async (req, res) => {
     try {
-        const user = await userModel.save(req.body);
-        res.status(201).json({ message: "User created successfully", user });
+        const { name, email, password } = req.body;
+
+        // Validate input
+        if (!name || !email || !password) {
+            return res.status(400).json({
+                success: false,
+                message: 'Name, email and password are required'
+            });
+        }
+
+        // Check existing user
+        const existingUser = await User.findOne({ email });
+
+        if (existingUser) {
+            return res.status(400).json({
+                success: false,
+                message: 'Email already exists'
+            });
+        }
+
+        // Hash password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Create user
+        const newUser = await User.create({
+            name,
+            email,
+            password: hashedPassword
+        });
+
+        res.status(201).json({
+            success: true,
+            message: 'User created successfully',
+            user: {
+                id: newUser._id,
+                name: newUser.name,
+                email: newUser.email
+            }
+        });
+
     } catch (error) {
         handleError(res, error);
     }
 };
 
+
+// 2. LOGIN USER
+const loginUser = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        if (!email || !password) {
+            return res.status(400).json({
+                success: false,
+                message: 'Email and password are required'
+            });
+        }
+
+        // Find user
+        const user = await User.findOne({ email }).select('+password');
+
+        if (!user) {
+            return res.status(401).json({
+                success: false,
+                message: 'Invalid email or password'
+            });
+        }
+
+        // Compare passwords
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        if (!isMatch) {
+            return res.status(401).json({
+                success: false,
+                message: 'Invalid email or password'
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: 'Login successful',
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email
+            }
+        });
+
+    } catch (error) {
+        handleError(res, error);
+    }
+};
+
+
+// 3. GET ALL USERS
+const getAll = async (req, res) => {
+    try {
+        const users = await User.find().select('-password');
+
+        res.status(200).json({
+            success: true,
+            count: users.length,
+            users
+        });
+
+    } catch (error) {
+        handleError(res, error);
+    }
+};
+
+
+// 4. GET USER BY ID
+const getById = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id).select('-password');
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'User not found'
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            user
+        });
+
+    } catch (error) {
+        handleError(res, error);
+    }
+};
+
+
+// 5. UPDATE USER
 const update = async (req, res) => {
     try {
-        const id = Number(req.params.id);
-        if (Number.isNaN(id)) return res.status(400).json({ message: "Invalid id" });
+        const { name, email, password } = req.body;
 
-        const user = await userModel.update(id, req.body);
-        if (!user) return res.status(404).json({ message: "User not found" });
-        res.json({ message: "User updated successfully", user });
+        const updateData = {};
+
+        if (name !== undefined) updateData.name = name;
+        if (email !== undefined) updateData.email = email;
+
+        // Hash password if it is being updated
+        if (password) {
+            updateData.password = await bcrypt.hash(password, 10);
+        }
+
+        const user = await User.findByIdAndUpdate(
+            req.params.id,
+            { $set: updateData },
+            {
+                new: true,
+                runValidators: true
+            }
+        ).select('-password');
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'User not found'
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: 'User updated successfully',
+            user
+        });
+
     } catch (error) {
         handleError(res, error);
     }
 };
 
+
+// 6. DELETE USER
 const deleteUser = async (req, res) => {
     try {
-        const id = Number(req.params.id);
-        if (Number.isNaN(id)) return res.status(400).json({ message: "Invalid id" });
+        const user = await User.findByIdAndDelete(req.params.id);
 
-        const deleted = await userModel.delete(id);
-        if (!deleted) return res.status(404).json({ message: "User not found" });
-        res.json({ message: "User deleted successfully" });
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'User not found'
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: 'User deleted successfully'
+        });
+
     } catch (error) {
         handleError(res, error);
     }
 };
 
-module.exports = { getAll, getById, save, update, deleteUser };
+
+// EXPORT ALL FUNCTIONS
+module.exports = {
+    save,
+    loginUser,
+    getAll,
+    getById,
+    update,
+    deleteUser
+};
