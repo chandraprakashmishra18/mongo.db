@@ -11,6 +11,7 @@
     "db:logs": "docker compose logs -f mongodb"
   },
   "dependencies": {
-    "mongodb": "^7.6.0"
+    "mongodb": "^7.6.0",
+    "mongoose": "^9.12.0"
   }
 }
