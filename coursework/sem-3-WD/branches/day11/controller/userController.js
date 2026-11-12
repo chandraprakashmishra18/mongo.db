@@ -170,6 +170,9 @@ const getById = async (req, res) => {
     }
 };
 
+// const token = jwt.sign({ id: user._id }, process.env . 
+// JWT_SECRET, {expiresIn: '1h'});
+
 
 // 5. UPDATE USER
 const update = async (req, res) => {
