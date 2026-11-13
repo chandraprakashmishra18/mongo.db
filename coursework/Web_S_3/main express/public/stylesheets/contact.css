@@ -1,0 +1,80 @@
+
+        :root {
+--primary: #005d5f;
+--secondary: #dee33e;
+--color: #38393d;
+--black: #212529;
+--light-gray: #fcfcec;
+}
+@import
+url('https://fonts.googleapis.com/css2?family=Bree+Serif&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+body{
+font-family: 'Roboto', sans-serif;
+font-size: 18px;
+line-height: 150%;
+text-align: center;
+}
+h1, h2, h3, h4, h5, h6{
+font-family: 'Bree Serif', serif;
+
+}
+.light-background{
+background-color: var(--light-gray);
+}
+.spacing{
+padding: 4rem 0;
+}
+.team-list {
+padding: 1rem;
+border-radius: 15px;
+background: var(--white);
+border: 2px solid #D2D2D2;
+  text-align: center;
+}
+
+
+.team-list img {
+width: 90px;
+height: 90px;
+margin-bottom: 0.5rem;
+border-radius: 100%;
+border: 2px solid #f4f4f4;
+}
+
+.team-list h3 {
+font-size: 1.3rem;
+}
+
+.team-list h3:hover {
+border-color: var(--primary);
+}
+
+.team-list .location {
+display: inline-block;
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+
+}
+.team-list .location img {
+width: 26px;
+height: 26px;
+margin-right: 10px;
+margin-bottom: 0;
+border: 0;
+}
+
+.team-list .role {
+color: var(--black);
+}
+
+
+@media(max-width: 400px) {
+.team-list{
+text-align: center;
+}
+.team-list .location{
+justify-content: center;
+}
+}
+    
