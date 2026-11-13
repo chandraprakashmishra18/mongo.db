@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1,
+        "name": "Manali Tour",
+        "destination": "Manali",
+        "price": 5000
+    },
+    {
+        "id": 2,
+        "name": "Goa Tour",
+        "destination": "Goa",
+        "price": 7000
+    },
+    {
+        "id": 3,
+        "name": "Jaipur Tour",
+        "destination": "Jaipur",
+        "price": 4000
+    }
+]
