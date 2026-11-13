@@ -1,0 +1,22 @@
+{
+  "name": "web_s-3",
+  "version": "1.0.0",
+  "description": "daily task project",
+  "repository": {
+    "type": "git",
+    "url": "Web_S_3"
+  },
+  "license": "ISC",
+  "author": "Vicky",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "dev": "nodemon app.js",
+    "test": "echo \\\\\\\"Error: no test specified\\\\\\\" && edit 1"
+  },
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "express": "^5.2.1",
+    "i": "^0.3.7"
+  }
+}
