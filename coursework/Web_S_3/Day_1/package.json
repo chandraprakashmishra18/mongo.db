@@ -1,0 +1,29 @@
+{
+  "name": "vicky",
+  "version": "2.0.1",
+  "description": "hello",
+  "keywords": [
+    "1234"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "any"
+  },
+  "license": "ISC",
+  "author": "me",
+  "type": "helo",
+  "main": "node.js",
+  "scripts": {
+    "test": "2"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^4.22.2",
+    "mongoose": "^9.9.4"
+  },
+  "devDependencies": {
+    "jest": "^30.5.0",
+    "nodemon": "^3.1.14"
+  }
+}
