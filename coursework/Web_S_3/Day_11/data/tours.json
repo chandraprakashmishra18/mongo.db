@@ -1,0 +1,77 @@
+// // Document -> match -> grouping -> Projection -> Aggregation -> Filter -> Sort -> Limit -> Skip
+
+// db.students.aggregate([
+//     {
+//         $group:{
+//             _id:"course",
+//             averageAge:{$avg:"$age"}
+//         },
+//     },
+//     {$sort:{averageAge:-1}}
+// ])
+
+// db.students.aggregate([
+//     {
+//         $group:{
+//             _id:"$course",
+//             averageAge:{$avg:"$age"}
+//         }
+//     }
+// ])
+
+// db.students.aggregate([
+//     {
+//         $match: { age: { $gte:20}}
+
+//     },
+//     {
+//         $count:"total_students"
+//     }
+
+// ])
+
+// {
+//     name: "Amit",
+//     skills: ["JavaScript","Node.js","MongoDb"],
+// }
+// Amit - JavaScript
+// Amit - Node.js
+// Amit - MongoDB
+
+// db.employees.aggregate([
+//     {
+//         $unwind: "$skills"
+//     },
+//     {
+//         $group: {
+//             _id: "$department",
+//             studentCount: { $sum:1}
+//         }
+//     }
+// ])
+
+// db.students.aggregate([
+//     {
+//         $lookup: {
+//             from:"courses",
+//             localField:"courseId",
+//             foreignField:"courseId",
+//             as:"courseDetails"
+//         }
+//     }
+// ])
+
+// {
+//     $match: {
+//         salary: {
+//             $gt:70000
+//         }
+//     }
+// }
+
+// {
+//     $group: {
+//         _id: "$department",
+//         emplo
+//     }
+// }
