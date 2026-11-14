@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 
 const tourController = require('../controller/tourController');
-// 1. Changed this line to destructure 'protect' out of the middleware
 const { protect } = require('../middleware/authMiddleware');
 
 // GET all tours
@@ -14,14 +13,15 @@ router.get('/tours/search', tourController.getToursByQuery);
 // GET tour by ID
 router.get('/tours/:id', tourController.getTourById);
 
-// CREATE tour
-// 2. Changed 'authMiddleware' to 'protect' here
+// CREATE tour (Protected)
 router.post('/tours', protect, tourController.saveTours);
 
-// UPDATE tour
-router.put('/tours/:id', tourController.updateTour);
+// UPDATE tour (Protected)
+// Added 'protect' right before the controller
+router.put('/tours/:id', protect, tourController.updateTour);
 
-// DELETE tour
-router.delete('/tours/:id', tourController.deleteTourbyID);
+// DELETE tour (Protected)
+// Added 'protect' right before the controller
+router.delete('/tours/:id', protect, tourController.deleteTourbyID);
 
 module.exports = router;
