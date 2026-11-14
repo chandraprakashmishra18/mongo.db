@@ -14,7 +14,7 @@ const save = async (newUser) => {
 };
 
 const update = async (id, updatedData) => {
-    const { id: ignored, ...data } = updatedData;
+    const { id: ignored, passwordHash: ignoredPasswordHash, ...data } = updatedData;
     return User.findOneAndUpdate({ id }, data, { new: true, runValidators: true })
         .select(hidden)
         .lean();

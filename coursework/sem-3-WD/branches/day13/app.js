@@ -3,6 +3,7 @@ const morgan = require('morgan');
 
 const tourRouter = require('./router/tourRouter');
 const userRouter = require('./router/userRouter');
+const authRouter = require('./routes/authRoutes');
 
 const app = express();
 
@@ -22,5 +23,6 @@ app.get('/', (req, res) => {
 // Routers
 app.use('/packages', tourRouter);
 app.use('/user', userRouter);
+app.use('/auth', authRouter);
 
 module.exports = app;

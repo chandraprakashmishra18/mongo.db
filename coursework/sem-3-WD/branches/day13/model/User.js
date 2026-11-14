@@ -15,7 +15,8 @@ const userSchema = new mongoose.Schema({
         lowercase: true,
         trim: true,
         match: [/^\S+@\S+\.\S+$/, "Please enter a valid email"]
-    }
+    },
+    passwordHash: { type: String, select: false }
 });
 
 module.exports = mongoose.model("User", userSchema);

@@ -55,3 +55,13 @@ Backend / API
 cors 
 ###Schema
 
+## Authentication routes
+
+Copy `.env.example` to `.env`, set a private `JWT_SECRET`, and install this branch's dependencies with `npm install`.
+
+- `POST /auth/register` accepts `name`, `email`, and `password` and returns a bearer token.
+- `POST /auth/login` accepts `email` and `password` and returns a bearer token.
+- Write operations under `/user` and `/packages` require `Authorization: Bearer <token>`.
+
+Passwords are stored as bcrypt hashes. The sample data remains suitable only for local coursework use.
+
