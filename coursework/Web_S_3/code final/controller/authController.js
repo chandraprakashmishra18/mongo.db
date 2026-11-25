@@ -98,6 +98,16 @@ const loginUser = async (req, res) => {
                 email: user.email
             }
         });
+        // //verfiy token
+        // const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        // const User = await User.findById(decodeed.id).select
+        // ('-password');
+        // if(!user){
+        //     return res.status(401).json({message:'Not authorized,token'})
+        // }
+
+
+
     } catch (error) {
         res.status(500).json({
             message: 'Error logging in user',

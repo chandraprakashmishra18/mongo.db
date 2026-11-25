@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 
 const tourController = require('../controller/tourController');
-const { protect } = require('../middleware/authMiddleware');
+// 1. Fixed typo: 'restricTo' -> 'restrictTo'
+const { protect, restrictTo } = require('../middleware/authMiddleware');
 
 // GET all tours
 router.get('/tours', tourController.getAllTours);
@@ -14,14 +15,15 @@ router.get('/tours/search', tourController.getToursByQuery);
 router.get('/tours/:id', tourController.getTourById);
 
 // CREATE tour (Protected)
-router.post('/tours', protect, tourController.saveTours);
+// 2. Fixed syntax: added the missing comma before tourController.saveTours
+router.post('/tours', protect, restrictTo('admin', 'superadmin'), tourController.saveTours);
 
 // UPDATE tour (Protected)
-// Added 'protect' right before the controller
-router.put('/tours/:id', protect, tourController.updateTour);
+// 3. Added restrictTo here as well so only admins can update
+router.put('/tours/:id', protect, restrictTo('admin', 'superadmin'), tourController.updateTour);
 
 // DELETE tour (Protected)
-// Added 'protect' right before the controller
-router.delete('/tours/:id', protect, tourController.deleteTourbyID);
+// 3. Added restrictTo here as well so only admins can delete
+router.delete('/tours/:id', protect, restrictTo('admin', 'superadmin'), tourController.deleteTourbyID);
 
 module.exports = router;

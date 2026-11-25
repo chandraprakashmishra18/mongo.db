@@ -76,7 +76,8 @@ const saveTours = async (req, res) => {
         res.status(201).json({
             success: true,
             message: 'Tour created successfully',
-            data: newTour
+            data: newTour,
+            createdBy: req.user._id
         });
 
     } catch (error) {
